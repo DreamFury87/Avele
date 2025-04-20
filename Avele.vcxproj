@@ -149,7 +149,17 @@ sfml-network.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Avele.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Counter.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Hole.cpp" />
+    <ClCompile Include="Menu.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Counter.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Hole.h" />
+    <ClInclude Include="Menu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
