@@ -1,23 +1,39 @@
 #pragma once
-#include <SFML/Graphics.hpp>
 #include "Hole.h"
-#include "Menu.h"
+#include <string>
 #include <vector>
+
+using namespace std;
+
+enum STATE { FIRST, SECOND };
 
 class Game
 {
-private:
-	//sf::RenderWindow window(sf::VideoMode({ 1000, 700 }), "Avele");
-	sf::RenderWindow window;
-	sf::Font font;
-	std::vector<Hole> holes;
+private:	
+	vector<Hole> holes; // Вектор лунок
+	STATE current_player; // Текущий игрок (FIRST или SECOND)
+	bool game_active; //Состояние игры
+
+	int first_barn; //Амбар первого игрока
+	int second_barn; //Амбар второго игрока
 
 public:
 	Game();
 	~Game();
+	
+	void Move(int hole_number);
+	void Draw();
 
-	void Loop();
-	void Reset();
-	void Update(std::vector<Hole>, std::vector<int> );
+	void New_Game();
+
+	void Save_Game();
+	void Load_Game(string path);
+
+	void Switch_Player();
+	vector<Hole> Get_Holes();
+
+	bool Check_Win_Condition();
+
+	STATE Get_Current_Player();
 };
 

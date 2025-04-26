@@ -2,48 +2,36 @@
 #include <iostream>
 using namespace std;
 
-Hole::Hole(sf::Vector2f pos) {
-	cout << "Hole's constructor is working" << endl;
-
-	texture.loadFromFile(hole_texture, false);
-	shape.setTexture(&texture);
-
-	position = pos;
-	shape.setPosition(position);
-
-	cout << "Hole is created!" << endl;
-}
-
 //Конструктор по умолчанию
 Hole::Hole() {
-	cout << "Hole's constructor is working" << endl;
-
-	texture.loadFromFile(hole_texture, false);
-	shape.setTexture(&texture);
-
-	position = { 100.f, 100.f };
-	shape.setPosition(position);
-
-	cout << "Hole is created!" << endl;
+	//cout << "Hole's constructor is working" << endl;
+	pebbles = 4;
+	//cout << "Hole is created!" << endl;
 }
 
 //Деструктор
 Hole::~Hole() {
-	cout << "Hole is deleted!" << endl;
+	//cout << "Hole is deleted!" << endl;
 }
 
 //Обновление количества камней в лунке
-void Hole::Update(int) {
-
+void Hole::Update(int value) {
+	pebbles = value;
 }
 
-//Изменение позиции
-void Hole::Set_Position(sf::Vector2f pos) {
-	position = pos;
+//Получение количества камней в лунке
+int Hole::Get_Pebbles() {
+	return pebbles;
 }
 
-//Отрисовка
-void Hole::Render(const sf::RenderTarget &target) {
-	//target.draw(this->shape);
-	target.draw(shape);
+Hole& Hole::operator ++(int){
+	Hole old = *this;
+	pebbles++;
+	return old;
+}
+
+Hole& Hole::operator --(int){
+	Hole old = *this;
+	pebbles--;
+	return old;
 }

@@ -1,23 +1,22 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-#include "Counter.h"
-#include "Images.h"
+#include <vector>
+#include <iostream>
+using namespace std;
 
 class Hole{
 private:
-	sf::Texture texture;
-	Counter pebbles;
-	sf::Vector2f position;
-	sf::CircleShape shape;
+	int pebbles;
 
-public:
-	Hole(sf::Vector2f );
+public:	
+	//int pebbles;
+
 	Hole();
 	~Hole();
 
 	void Update(int);
-	void Set_Position(sf::Vector2f );
-	void Render(const sf::RenderTarget &);
-
+	int Get_Pebbles();
+	
+	Hole& operator ++(int);
+	Hole& operator --(int);
 };
 

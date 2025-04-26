@@ -1,31 +1,31 @@
-﻿#include <SFML/Graphics.hpp>
-#include "Menu.h"
-#include "Game.h"
+﻿#include "Menu.h"
+#include <iostream>
+using namespace std;
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode({ 700, 600 }), "Avele");
+    setlocale(LC_ALL, "Russian");
+    Menu menu;
 
-    //window.setPosition(sf::Vector2i(10, 50));   
-    auto color = sf::Color{ 0xFF0000FF };
-    
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
-
-    Hole test;
-    
-    while (window.isOpen())
-    {
-        while (const std::optional event = window.pollEvent())
-        {            
-            if (event->is<sf::Event::Closed>())
-                window.close();
+    while (true) {
+        int choice = menu.Console_Menu();
+        switch (choice) {
+        case 1:
+            menu.Select_Hole();
+            break;
+        case 2:
+            menu.New_Game();
+            break;
+        case 3:
+            menu.Save_Game();
+            break;
+        case 4:
+            menu.Load_Game();
+            break;
+        case 5:
+            cout << "Выход из игры." << endl;
+            return 0;
         }
-        window.clear();
-
-        window.draw(shape);      
-        test.Render(window);
-        // end the current frame
-        window.display();
-    }
+    }    
+    return 0;
 }
