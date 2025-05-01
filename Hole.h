@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include <iostream>
+#include <string>
+#include <fstream>
 using namespace std;
 
 class Hole{
@@ -11,6 +13,7 @@ public:
 	//int pebbles;
 
 	Hole();
+	Hole(int);
 	~Hole();
 
 	void Update(int);

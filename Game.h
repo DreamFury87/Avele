@@ -9,7 +9,7 @@ enum STATE { FIRST, SECOND };
 
 class Game
 {
-private:	
+protected:	
 	vector<Hole> holes; // Вектор лунок
 	STATE current_player; // Текущий игрок (FIRST или SECOND)
 	bool game_active; //Состояние игры
@@ -19,6 +19,8 @@ private:
 
 public:
 	Game();
+	Game(vector<Hole> loaded_holes, int barn1, int barn2, STATE player, bool active);
+
 	~Game();
 	
 	void Move(int hole_number);

@@ -3,10 +3,13 @@
 using namespace std;
 
 //Конструктор по умолчанию
-Hole::Hole() {
-	//cout << "Hole's constructor is working" << endl;
-	pebbles = 4;
-	//cout << "Hole is created!" << endl;
+Hole::Hole() {	
+	pebbles = 4;	
+}
+
+//Конструктор с заданным количеством камней
+Hole::Hole(int value) {
+	pebbles = value;
 }
 
 //Деструктор

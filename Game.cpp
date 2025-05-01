@@ -1,8 +1,9 @@
-#include "Game.h"
+п»ї#include "Game.h"
 #include <iostream>
+#include <fstream>
 using namespace std;
 
-//Конструктор по умолчанию
+//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 Game::Game() {
     first_barn = 0; second_barn = 0;
     current_player = FIRST;
@@ -13,16 +14,24 @@ Game::Game() {
     }
 }
 
+//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
+Game::Game(vector<Hole> loaded_holes, int barn1, int barn2, STATE player = FIRST, bool active = true) {
+    holes = loaded_holes;
+    first_barn = barn1; second_barn = barn2;
+    current_player = player;
+    game_active = active;
+}
+
 Game::~Game() {
 }
 
-//Простая "отрисовка" в консоли
+//РџСЂРѕСЃС‚Р°СЏ "РѕС‚СЂРёСЃРѕРІРєР°" РІ РєРѕРЅСЃРѕР»Рё
 void Game::Draw() {
     cout << endl;
     if (current_player == FIRST)
-        cout << "Ход первого игрока: \n";
+        cout << "РҐРѕРґ РїРµСЂРІРѕРіРѕ РёРіСЂРѕРєР°: \n";
     else
-        cout << "Ход второго игрока: \n";
+        cout << "РҐРѕРґ РІС‚РѕСЂРѕРіРѕ РёРіСЂРѕРєР°: \n";
 
     cout << "First Barn: " << first_barn << endl;
     cout << "Second Barn: " << second_barn << endl;
@@ -33,15 +42,18 @@ void Game::Draw() {
     cout << endl;
 }
 
-//Ход
+//РҐРѕРґ
 void Game::Move(int hole_number) {
     if (holes[hole_number].Get_Pebbles() == 0) {
-        cout << "Лунка Пуста!\n";
+        cout << "Р›СѓРЅРєР° РџСѓСЃС‚Р°!\n";
         return;
     }
 
     int idx = hole_number;
-    while (holes[hole_number].Get_Pebbles()) {
+    int pebble = holes[hole_number].Get_Pebbles();
+
+    while (pebble) {       
+
         if (idx > 5 and idx < 11) {
             idx++;
         }
@@ -55,32 +67,79 @@ void Game::Move(int hole_number) {
             idx = 6;
         }
         holes[idx]++;
-        holes[hole_number]--;               
-    }
+        /*if (pebble == 1 and (holes[idx].Get_Pebbles() == 2 or holes[idx].Get_Pebbles() == 3)) {
 
-    //holes[hole_number].Update(0);
+        }*/
+        holes[hole_number]--;
+        pebble = holes[hole_number].Get_Pebbles();
+    }
+        
     this->Switch_Player();
         
 }
 
-//Сохранение игры
+//РЎРѕС…СЂР°РЅРµРЅРёРµ РёРіСЂС‹
 void Game::Save_Game(){
+    ofstream save("save.bin", ios::binary | ios::out);
+    if (save.is_open()) {
+        // РЎРѕС…СЂР°РЅСЏРµРј С‚РµРєСѓС‰РµРіРѕ РёРіСЂРѕРєР°
+        save.write((char*)&current_player, sizeof(current_player)); 
+
+        //game_active
+        save.write((char*)&game_active, sizeof(game_active));
+
+        // РЎРѕС…СЂР°РЅСЏРµРј Р°РјР±Р°СЂС‹
+        save.write((char*)&first_barn, sizeof(int));
+        save.write((char*)&second_barn, sizeof(int));
+
+        // РЎРѕС…СЂР°РЅСЏРµРј РєР°Р¶РґСѓСЋ Р»СѓРЅРєСѓ
+        for (auto& hole : holes) {            
+            save.write((char*)&(hole), sizeof(Hole));
+        }       
+    }
+    else {
+        cout << "РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ." << endl;
+    }
+    
+    save.close();
 }
 
 STATE Game::Get_Current_Player() {
     return current_player;
 }
 
-//Загрузка сохранения
+//Р—Р°РіСЂСѓР·РєР° СЃРѕС…СЂР°РЅРµРЅРёСЏ
 void Game::Load_Game(string path) {
+    ifstream load(path, ios::binary | ios::in);
+    
+    if (load.is_open()) {
+        // Р—Р°РіСЂСѓР¶Р°РµРј С‚РµРєСѓС‰РµРіРѕ РёРіСЂРѕРєР°
+        load.read((char*)&current_player, sizeof(current_player)); 
+
+        //game_active
+        load.read((char*)&game_active, sizeof(game_active));
+
+        // Р—Р°РіСЂСѓР¶Р°РµРј Р°РјР±Р°СЂС‹
+        load.read((char*)&first_barn, sizeof(int));
+        load.read((char*)&second_barn, sizeof(int));
+                
+        // Р—Р°РіСЂСѓР¶Р°РµРј РєР°Р¶РґСѓСЋ Р»СѓРЅРєСѓ
+        for (auto& hole : holes) {            
+            load.read((char*)&(hole), sizeof(Hole));
+        }
+    }
+    else {
+        cout << "Р¤Р°Р№Р» СЃРѕС…СЂР°РЅРµРЅРёСЏ РЅРµ РЅР°Р№РґРµРЅ." << endl;
+    }
+    load.close();
 }
 
-//Получение массива лунок:
+//РџРѕР»СѓС‡РµРЅРёРµ РјР°СЃСЃРёРІР° Р»СѓРЅРѕРє:
 vector<Hole> Game::Get_Holes() {
     return holes;
 }
 
-//Переключение между игроками
+//РџРµСЂРµРєР»СЋС‡РµРЅРёРµ РјРµР¶РґСѓ РёРіСЂРѕРєР°РјРё
 void Game::Switch_Player() {
     if (current_player == FIRST)
         current_player = SECOND;
@@ -88,12 +147,12 @@ void Game::Switch_Player() {
         current_player = FIRST;
 }
 
-//Новая игра
+//РќРѕРІР°СЏ РёРіСЂР°
 void Game::New_Game() {
 	*this = Game();
 }
 
 bool Game::Check_Win_Condition() {
-    // Логика для проверки условий выигрыша
+    // Р›РѕРіРёРєР° РґР»СЏ РїСЂРѕРІРµСЂРєРё СѓСЃР»РѕРІРёР№ РІС‹РёРіСЂС‹С€Р°
     return false; 
 }
