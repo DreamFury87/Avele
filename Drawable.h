@@ -3,6 +3,6 @@
 class Drawable: public Game
 {
 public:
-
+	void Draw();
 };
 

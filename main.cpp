@@ -23,8 +23,12 @@ int main()
             menu.Load_Game();
             break;
         case 5:
+            menu.Game_Rules();
+            break;
+        case 6:
             cout << "Выход из игры." << endl;
             return 0;
+            
         }
     }    
     return 0;

@@ -7,18 +7,15 @@ using namespace std;
 
 class Hole{
 private:
-	int pebbles;
+	//int pebbles;
 
 public:	
-	//int pebbles;
+	int pebbles;
 
 	Hole();
 	Hole(int);
 	~Hole();
-
-	void Update(int);
-	int Get_Pebbles();
-	
+		
 	Hole& operator ++(int);
 	Hole& operator --(int);
 };

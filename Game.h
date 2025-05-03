@@ -17,11 +17,14 @@ protected:
 	int first_barn; //Амбар первого игрока
 	int second_barn; //Амбар второго игрока
 
+	int Next_Hole(int);
+	int Prev_Hole(int);
+
 public:
 	Game();
 	Game(vector<Hole> loaded_holes, int barn1, int barn2, STATE player, bool active);
 
-	~Game();
+	~Game();	
 	
 	void Move(int hole_number);
 	void Draw();
@@ -35,6 +38,7 @@ public:
 	vector<Hole> Get_Holes();
 
 	bool Check_Win_Condition();
+	bool Own_Holes(int);
 
 	STATE Get_Current_Player();
 };

@@ -17,16 +17,6 @@ Hole::~Hole() {
 	//cout << "Hole is deleted!" << endl;
 }
 
-//ќбновление количества камней в лунке
-void Hole::Update(int value) {
-	pebbles = value;
-}
-
-//ѕолучение количества камней в лунке
-int Hole::Get_Pebbles() {
-	return pebbles;
-}
-
 Hole& Hole::operator ++(int){
 	Hole old = *this;
 	pebbles++;

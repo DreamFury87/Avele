@@ -29,53 +29,98 @@ Game::~Game() {
 void Game::Draw() {
     cout << endl;
     if (current_player == FIRST)
-        cout << "Ход первого игрока: \n";
+        cout << "Ход первого игрока \n";
     else
-        cout << "Ход второго игрока: \n";
+        cout << "Ход второго игрока \n";
 
     cout << "First Barn: " << first_barn << endl;
     cout << "Second Barn: " << second_barn << endl;
     for (int i = 0; i < 12; ++i) {
-        cout << "[ " << i << " ]: " << holes[i].Get_Pebbles() << "   ";
+        cout << "[ " << i << " ]: " << holes[i].pebbles << "   ";
         if (i == 5) cout << endl;
     }    
     cout << endl;
 }
 
+//Обход лунок против часовой стрелки
+int Game::Next_Hole(int hole){
+    if (hole > 5 and hole < 11) {
+        hole++;
+    }
+    else if (hole == 11) {
+        hole = 5;
+    }
+    else if (hole > 0 and hole < 6) {
+        hole--;
+    }    
+    else if(hole == 0){
+        hole = 6;
+    }
+    return hole;
+}
+
+//Обход лунок по часовой стрелке
+int Game::Prev_Hole(int hole) {
+    if (hole > 5 and hole < 11) {
+        hole--;
+    }
+    else if (hole == 5) {
+        hole = 11;
+    }
+    else if (hole >= 0 and hole < 6) {
+        hole++;
+    }
+    else if (hole == 6) {
+        hole = 0;
+    }
+    return hole;
+}
+
+bool Game::Own_Holes(int hole){
+    if (current_player == FIRST) {
+        return (hole >= 0 and hole < 6);
+    }
+    else {
+        return (hole >= 6 and hole < 12);
+    }
+}
+
 //Ход
 void Game::Move(int hole_number) {
-    if (holes[hole_number].Get_Pebbles() == 0) {
+    if (holes[hole_number].pebbles == 0) {
         cout << "Лунка Пуста!\n";
         return;
     }
 
-    int idx = hole_number;
-    int pebble = holes[hole_number].Get_Pebbles();
+    int next_hole = hole_number; int prev_hole = hole_number;
+    int pebble = holes[hole_number].pebbles;
 
-    while (pebble) {       
-
-        if (idx > 5 and idx < 11) {
-            idx++;
-        }
-        else if (idx > 0) {
-            idx--;
-        }
-        else if (idx == 11) {
-            idx = 5;
-        }
-        else {
-            idx = 6;
-        }
-        holes[idx]++;
-        /*if (pebble == 1 and (holes[idx].Get_Pebbles() == 2 or holes[idx].Get_Pebbles() == 3)) {
-
-        }*/
+    while (pebble > 0) {
+        //Посев в следующую лунку
+        next_hole = this->Next_Hole(next_hole);
         holes[hole_number]--;
-        pebble = holes[hole_number].Get_Pebbles();
-    }
-        
-    this->Switch_Player();
-        
+        holes[next_hole]++;
+
+        //Сбор по кругу
+        if (not(Own_Holes(next_hole))) {
+            if (pebble == 1 and (holes[next_hole].pebbles == 2 or holes[next_hole].pebbles == 3)) {
+                prev_hole = next_hole;
+                do {
+                    if (current_player == FIRST)
+                        first_barn += holes[prev_hole].pebbles;
+                    else
+                        second_barn += holes[prev_hole].pebbles;
+
+                    holes[prev_hole].pebbles = 0;
+                    prev_hole = this->Prev_Hole(prev_hole);
+
+                } while (holes[prev_hole].pebbles == 2 or holes[prev_hole].pebbles == 3);
+                break;
+            }
+        }        
+        pebble = holes[hole_number].pebbles;        
+    }        
+    this->Switch_Player();        
 }
 
 //Сохранение игры
@@ -154,5 +199,10 @@ void Game::New_Game() {
 
 bool Game::Check_Win_Condition() {
     // Логика для проверки условий выигрыша
-    return false; 
+    if (first_barn == 24 or second_barn == 24) {
+        return true;
+    }
+    else {
+        return false;
+    }   
 }
