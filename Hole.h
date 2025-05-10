@@ -7,8 +7,7 @@ using namespace std;
 
 class Hole{
 private:
-	//int pebbles;
-
+	
 public:	
 	int pebbles;
 

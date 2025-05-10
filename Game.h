@@ -5,41 +5,51 @@
 
 using namespace std;
 
-enum STATE { FIRST, SECOND };
+enum STATE { FIRST, SECOND, DRAW, ACTIVE};
 
 class Game
 {
 protected:	
 	vector<Hole> holes; // Вектор лунок
 	STATE current_player; // Текущий игрок (FIRST или SECOND)
-	bool game_active; //Состояние игры
+	STATE game_active; //Состояние игры
 
 	int first_barn; //Амбар первого игрока
 	int second_barn; //Амбар второго игрока
 
-	int Next_Hole(int);
-	int Prev_Hole(int);
+	int Next_Hole(int); //Обход против часовой стрелки
+	int Prev_Hole(int); //Обход по часовой стрелке
+
+	void Append_to_Barn(int); // Сбор камней
 
 public:
 	Game();
-	Game(vector<Hole> loaded_holes, int barn1, int barn2, STATE player, bool active);
+	Game(vector<Hole> loaded_holes, int barn1, int barn2, STATE player, STATE active);
 
 	~Game();	
 	
-	void Move(int hole_number);
-	void Draw();
+	void Move(int hole_number); //Логика хода
+	void Draw(); //Debug "отрисовка"
 
-	void New_Game();
+	void New_Game(); //Новая игра
 
-	void Save_Game();
-	void Load_Game(string path);
+	void Save_Game(); //Сохранение
+	void Load_Game(string path); //Загрузка
 
-	void Switch_Player();
-	vector<Hole> Get_Holes();
+	void Give_Up(); //Сдаться
+	void Offer_a_Draw(); //Предложить ничью
+	void Print_Win();
 
-	bool Check_Win_Condition();
-	bool Own_Holes(int);
+	STATE Get_Current_Active();
 
-	STATE Get_Current_Player();
+	void Switch_Player(); //Переключение игроков
+	
+	STATE Check_Win_Condition(); //Проверка условия выигрыша
+	bool Own_Holes(int); //Свои-чужие лунки
+
+	STATE Get_Current_Player(); //Текущий игрок
+
+	void Change_Holes(vector<int> cheat_holes);
+	void Change_Barns(int, int);
 };
 
