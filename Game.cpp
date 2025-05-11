@@ -21,20 +21,12 @@ Game::Game(vector<Hole> loaded_holes, int barn1, int barn2, STATE player = FIRST
     game_active = active;
 }
 
-//Текущее состояние игры
-STATE Game::Get_Current_Active(){
-    return game_active;
-}
-
 void Game::Change_Holes(vector<int> cheat_holes) {
-    for (int i = 0; i < 12; ++i) {
-        holes[i].pebbles = cheat_holes[i];
-    }
+    for (int i = 0; i < 12; ++i) holes[i].pebbles = cheat_holes[i];    
 }
 
 void Game::Change_Barns(int first, int second) {
-    first_barn = first;
-    second_barn = second;
+    first_barn = first; second_barn = second;
 }
 
 void Game::Print_Win() {
@@ -55,12 +47,8 @@ void Game::Print_Win() {
 
 //Сдаться
 void Game::Give_Up() {
-    if (current_player == FIRST) {
-        game_active = SECOND;
-    }
-    else {
-        game_active = FIRST;
-    }
+    if (current_player == FIRST) game_active = SECOND;    
+    else game_active = FIRST;    
     this->Print_Win();
 } 
 
@@ -69,26 +57,6 @@ void Game::Offer_a_Draw() {
     game_active = DRAW;
     this->Print_Win();
 } 
-
-Game::~Game() {
-}
-
-//Простая "отрисовка" в консоли
-void Game::Draw() {
-    cout << endl;
-    if (current_player == FIRST)
-        cout << "Ход первого игрока \n";
-    else
-        cout << "Ход второго игрока \n";
-
-    cout << "First Barn: " << first_barn << endl;
-    cout << "Second Barn: " << second_barn << endl;
-    for (int i = 0; i < 12; ++i) {
-        cout << "[ " << i << " ]: " << holes[i].pebbles << "   ";
-        if (i == 5) cout << endl;
-    }    
-    cout << endl;
-}
 
 //Обход лунок против часовой стрелки
 int Game::Next_Hole(int hole){
@@ -125,17 +93,12 @@ int Game::Prev_Hole(int hole) {
 }
 
 bool Game::Own_Holes(int hole){
-    if (current_player == FIRST) {
-        return (hole >= 0 and hole < 6);
-    }
-    else {
-        return (hole >= 6 and hole < 12);
-    }
+    if (current_player == FIRST) return (hole >= 0 and hole < 6);    
+    else return (hole >= 6 and hole < 12);    
 }
 
 //Ход
 void Game::Move(int hole_number) {
-
     if (holes[hole_number].pebbles == 0) {
         cout << "Лунка Пуста!\n";
         return;
@@ -165,17 +128,13 @@ void Game::Move(int hole_number) {
         pebble = holes[hole_number].pebbles;        
     }        
     this->Switch_Player();
-    game_active = this->Check_Win_Condition();
-    //this->Print_Win();
+    game_active = this->Check_Win_Condition();    
 }
 
 // Сбор камней в амбар
 void Game::Append_to_Barn(int i) {
-    if (current_player == FIRST)
-        first_barn += holes[i].pebbles;
-    else
-        second_barn += holes[i].pebbles;
-
+    if (current_player == FIRST) first_barn += holes[i].pebbles;
+    else second_barn += holes[i].pebbles;
     holes[i].pebbles = 0;
 }
 
@@ -205,29 +164,19 @@ void Game::Save_Game(){
     save.close();
 }
 
-STATE Game::Get_Current_Player() {
-    return current_player;
-}
-
 //Загрузка сохранения
 void Game::Load_Game(string path) {
-    ifstream load(path, ios::binary | ios::in);
-    
+    ifstream load(path, ios::binary | ios::in);    
     if (load.is_open()) {
         // Загружаем текущего игрока
-        load.read((char*)&current_player, sizeof(current_player)); 
-
+        load.read((char*)&current_player, sizeof(current_player));
         //game_active
         load.read((char*)&game_active, sizeof(game_active));
-
         // Загружаем амбары
         load.read((char*)&first_barn, sizeof(int));
-        load.read((char*)&second_barn, sizeof(int));
-                
+        load.read((char*)&second_barn, sizeof(int));                
         // Загружаем каждую лунку
-        for (auto& hole : holes) {            
-            load.read((char*)&(hole), sizeof(Hole));
-        }
+        for (auto& hole : holes)  load.read((char*)&(hole), sizeof(Hole));          
     }
     else {
         cout << "Файл сохранения не найден." << endl;
@@ -237,25 +186,16 @@ void Game::Load_Game(string path) {
 
 //Переключение между игроками
 void Game::Switch_Player() {
-    if (current_player == FIRST)
-        current_player = SECOND;
-    else
-        current_player = FIRST;
-}
-
-//Новая игра
-void Game::New_Game() {
-	*this = Game();
+    if (current_player == FIRST) current_player = SECOND;
+    else current_player = FIRST;
 }
 
 // Логика для проверки условий выигрыша
 STATE Game::Check_Win_Condition(){
     bool win_condition = true;
-    for (int i = 0; i < 12; ++i) {
-        if (this->Own_Holes(i) and holes[i].pebbles) {
-            win_condition = false;
-        }
-    }
+    for (int i = 0; i < 12; ++i)
+        if (this->Own_Holes(i) and holes[i].pebbles) win_condition = false;
+        
     if (win_condition) {
         if (first_barn > second_barn) {
             game_active = FIRST;

@@ -26,13 +26,10 @@ public:
 	Game();
 	Game(vector<Hole> loaded_holes, int barn1, int barn2, STATE player, STATE active);
 
-	~Game();	
+	~Game() {}
 	
 	void Move(int hole_number); //Логика хода
-	void Draw(); //Debug "отрисовка"
-
-	void New_Game(); //Новая игра
-
+	
 	void Save_Game(); //Сохранение
 	void Load_Game(string path); //Загрузка
 
@@ -40,14 +37,13 @@ public:
 	void Offer_a_Draw(); //Предложить ничью
 	void Print_Win();
 
-	STATE Get_Current_Active();
+	STATE Get_Current_Active(){ return game_active; } //Текущее состояние игры
+	STATE Get_Current_Player() { return current_player; } //Текущий игрок
 
 	void Switch_Player(); //Переключение игроков
 	
 	STATE Check_Win_Condition(); //Проверка условия выигрыша
-	bool Own_Holes(int); //Свои-чужие лунки
-
-	STATE Get_Current_Player(); //Текущий игрок
+	bool Own_Holes(int); //Свои-чужие лунки	
 
 	void Change_Holes(vector<int> cheat_holes);
 	void Change_Barns(int, int);

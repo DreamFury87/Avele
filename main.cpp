@@ -1,7 +1,21 @@
-﻿#include "Menu.h"
-#include <iostream>
+﻿#include <iostream>
+#include "Drawable.h"
+#include "Menu.h"
+#include "Action.h"
+#include "Select_Hole.h"
+#include "Game_Rules.h"
+#include "Change_Holes.h"
+#include "Change_Barns.h"
+#include "New_Game.h"
+#include "Load_Game.h"
+#include "Save_Game.h"
+#include "Offer_A_Draw.h"
+#include "Give_Up.h"
 
 using namespace std;
+
+vector<Action*> action_list = { &select_hole, &game_rules,
+&new_game, &load_game, &save_game, &offer_a_draw, &give_up, &change_barns, &change_holes};
 
 int main()
 {
@@ -9,45 +23,10 @@ int main()
     system("chcp 1251");    
     system("color F2");
 
-    Menu menu;
-
-    while (true) {
-        int choice = menu.Console_Menu();
-        switch (choice) {
-        case 1:
-            menu.Select_Hole();
-            break;
-        case 2:
-            menu.New_Game();
-            break;
-        case 3:
-            menu.Save_Game();
-            break;
-        case 4:
-            menu.Load_Game();
-            break;
-        case 5:
-            menu.Game_Rules();
-            break;
-        case 6:
-            menu.Offer_a_Draw();
-            break;
-        case 7:
-            menu.Give_Up();
-            break;
-        case 8:
-            cout << "Выход из игры." << endl;
-            return 0;
-        case 9:
-            menu.Change_Holes();
-            break;
-        case 10:
-            menu.Change_Barns();
-            break;
-        case 13:
-            menu.Cheat_Mode();
-            break;
-        }
+    Menu menu(action_list);
+    
+    while (Action* action = menu.Select_Action()) {
+        action->Operate(menu);
     }    
     return 0;
 }
