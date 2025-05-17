@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Activate_Debug.cpp" />
     <ClCompile Include="Change_Barns.cpp" />
     <ClCompile Include="Change_Holes.cpp" />
     <ClCompile Include="Drawable.cpp" />
@@ -158,6 +159,7 @@
     <ClCompile Include="Select_Hole.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Activate_Debug.h" />
     <ClInclude Include="Change_Barns.h" />
     <ClInclude Include="Change_Holes.h" />
     <ClInclude Include="Drawable.h" />

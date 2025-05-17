@@ -3,12 +3,19 @@
 using namespace std;
 
 Menu::Menu(std::vector<Action*> _action_list) : action_list(_action_list) { 
-    debug_mode = false;
-    action_list.push_back(0); 
+    //debug_mode = DISABLED;    
+}
+
+Menu::Menu(std::vector<Action*> _action_list, Drawable game_) {  
+    //cout << "created\n";
+    debug_mode = ACTIVATED;
+    action_list = _action_list;
+    game = game_;     
 }
 
 Action* Menu::Select_Action() {
-    int n_item = action_list.size();    
+    int n_item = action_list.size();
+    if (debug_mode == DISABLED) n_item--;
     cout << "\n=================== Игровое меню ===================\n";
 
     for (int i = 0; i < n_item; ++i) {
@@ -23,6 +30,9 @@ Action* Menu::Select_Action() {
     cout << "=============================================\n";
 
     int item = GetNumber(1, n_item);
+    if (item == 13) {      
+        return action_list[8];
+    }
     return action_list[item - 1];
 }
 

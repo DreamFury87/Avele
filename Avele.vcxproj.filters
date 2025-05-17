@@ -57,6 +57,9 @@
     <ClCompile Include="Change_Holes.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Activate_Debug.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Hole.h">
@@ -99,6 +102,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Change_Holes.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Activate_Debug.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

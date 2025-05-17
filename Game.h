@@ -37,8 +37,8 @@ public:
 	void Offer_a_Draw(); //Предложить ничью
 	void Print_Win();
 
-	STATE Get_Current_Active(){ return game_active; } //Текущее состояние игры
-	STATE Get_Current_Player() { return current_player; } //Текущий игрок
+	STATE Get_Current_Active() const { return game_active; } //Текущее состояние игры
+	STATE Get_Current_Player() const { return current_player; } //Текущий игрок
 
 	void Switch_Player(); //Переключение игроков
 	
