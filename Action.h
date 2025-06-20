@@ -2,7 +2,6 @@
 #include <string>
 
 class Menu;
-
 class Action
 {
 public:

@@ -25,7 +25,7 @@ public:
 	Action* Select_Action();
 	int GetNumber(int, int);
 
-	bool Get_Debug_State() const { return debug_mode; }
+	CHEAT Get_Debug_State() const { return debug_mode; }
 	void Set_Debug_State(CHEAT debug_) { debug_mode = debug_; }
 
 	std::string Get_Answer();		

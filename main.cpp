@@ -2,6 +2,7 @@
 #include "Drawable.h"
 #include "Menu.h"
 #include "Action.h"
+/*
 #include "Select_Hole.h"
 #include "Game_Rules.h"
 #include "Change_Holes.h"
@@ -11,7 +12,8 @@
 #include "Save_Game.h"
 #include "Offer_A_Draw.h"
 #include "Give_Up.h"
-#include "Activate_Debug.h"
+#include "Activate_Debug.h"*/
+#include "Actions.h"
 
 using namespace std;
 
